@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ログイン | ひだるか屋らーめん 管理画面</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+
+<div class="login-wrapper">
+  <div class="login-logo">ひだるか屋らーめん</div>
+  <div class="login-sub">ADMIN PANEL</div>
+
+  <div class="login-card">
+    <h1 class="login-title">管理者ログイン</h1>
+    <div class="error-alert" id="login-error">メールアドレスまたはパスワードが正しくありません</div>
+
+    <div class="form-group">
+      <label class="form-label">メールアドレス</label>
+      <input type="email" class="form-input" id="email"
+             placeholder="admin@example.com" autocomplete="email">
+      <div class="form-error" id="email-error">メールアドレスを入力してください</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">パスワード</label>
+      <input type="password" class="form-input" id="password"
+             placeholder="••••••••" autocomplete="current-password">
+      <div class="form-error" id="pass-error">パスワードを入力してください</div>
+    </div>
+
+    <button class="form-submit" id="login-btn">ログイン</button>
+  </div>
+
+  <a href="index.html" class="login-back">← サイトトップへ戻る</a>
+</div>
+
+<script type="module">
+  import { login, redirectIfLoggedIn, validateRequired } from "./js/auth.js";
+
+  redirectIfLoggedIn();
+
+  const btn = document.getElementById("login-btn");
+
+  btn.addEventListener("click", async () => {
+    const ok = validateRequired([
+      { id: "email",    errorId: "email-error" },
+      { id: "password", errorId: "pass-error"  },
+    ]);
+    if (!ok) return;
+
+    btn.textContent = "ログイン中…";
+    btn.disabled    = true;
+
+    try {
+      await login(
+        document.getElementById("email").value,
+        document.getElementById("password").value
+      );
+      window.location.href = "admin.html";
+    } catch {
+      document.getElementById("login-error").classList.add("show");
+      btn.textContent = "ログイン";
+      btn.disabled    = false;
+    }
+  });
+
+  document.getElementById("password").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") btn.click();
+  });
+</script>
+</body>
+</html>
