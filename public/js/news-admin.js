@@ -13,7 +13,7 @@ export let newsItems = [];
 
 /* ---- 一覧取得 ---------------------------------------------- */
 export async function loadNewsItems() {
-  const snap = await getDocs(query(collection(db, "news"), orderBy("date", "desc")));
+  const snap = await getDocs(query(collection(db, "news"), orderBy("createdAt", "desc")));
   newsItems  = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   return newsItems;
 }
