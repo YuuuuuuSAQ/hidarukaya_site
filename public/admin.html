@@ -6,10 +6,38 @@
 <title>管理画面 | ひだるか屋らーめん</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .upload-area {
+    border: 2px dashed var(--border); border-radius: 8px;
+    padding: 1.5rem; text-align: center; cursor: pointer;
+    transition: all 0.2s; background: var(--gold-pale); position: relative;
+  }
+  .upload-area:hover, .upload-area.dragover { border-color: var(--gold); background: var(--gold-light); }
+  .upload-area input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-icon  { font-size: 2rem; margin-bottom: .5rem; }
+  .upload-label { font-size: .82rem; color: var(--warm-gray); letter-spacing: .05em; }
+  .upload-label strong { color: var(--red); }
+  #m-image-preview {
+    width: 100%; max-height: 200px; object-fit: cover;
+    border-radius: 6px; margin-bottom: .75rem;
+    border: 1px solid var(--border); display: none;
+  }
+  #m-image-placeholder {
+    width: 100%; height: 120px; background: var(--gold-light); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; margin-bottom: .75rem; border: 1px solid var(--border);
+  }
+  .upload-progress { display: none; margin-top: .75rem; }
+  .upload-progress.show { display: block; }
+  .progress-bar-wrap { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width .2s; width: 0%; }
+  .progress-label { font-size: .75rem; color: var(--warm-gray); text-align: right; margin-top: .25rem; }
+</style>
 </head>
 <body class="admin-page">
 
-<!-- ========== HEADER ========== -->
 <div class="admin-header">
   <span class="admin-logo">ひだるか屋 管理画面</span>
   <div class="admin-nav">
@@ -18,35 +46,23 @@
   </div>
 </div>
 
-<!-- ========== LAYOUT ========== -->
 <div class="admin-layout">
-
-  <!-- サイドバー -->
   <aside class="admin-sidebar">
     <div style="margin-bottom:1.25rem;">
       <div class="sidebar-section-label">メニュー</div>
-      <button class="sidebar-link active" data-page="dashboard">
-        <span class="sidebar-icon"></span>ダッシュボード
-      </button>
-      <button class="sidebar-link" data-page="news">
-        <span class="sidebar-icon"></span>お知らせ管理
-      </button>
-      <button class="sidebar-link" data-page="menu">
-        <span class="sidebar-icon"></span>メニュー管理
-      </button>
+      <button class="sidebar-link active" data-page="dashboard"><span class="sidebar-icon">🏠</span>ダッシュボード</button>
+      <button class="sidebar-link" data-page="news"><span class="sidebar-icon">📢</span>お知らせ管理</button>
+      <button class="sidebar-link" data-page="menu"><span class="sidebar-icon">🍜</span>メニュー管理</button>
     </div>
     <div>
       <div class="sidebar-section-label">サイト</div>
-      <a href="index.html" target="_blank" class="sidebar-link">
-        <span class="sidebar-icon"></span>公開サイト
-      </a>
+      <a href="index.html" target="_blank" class="sidebar-link"><span class="sidebar-icon">🌐</span>公開サイト</a>
     </div>
   </aside>
 
-  <!-- メインコンテンツ -->
   <main class="admin-main">
 
-    <!-- ======== ダッシュボード ======== -->
+    <!-- ダッシュボード -->
     <div id="page-dashboard">
       <h1 class="admin-page-title">ダッシュボード</h1>
       <div class="stats-grid">
@@ -68,14 +84,14 @@
       </div>
       <div class="quick-links">
         <button class="quick-card red-accent" data-page="news">
-          <div class="quick-card-icon"></div>
+          <div class="quick-card-icon">📢</div>
           <div class="quick-card-title">お知らせ管理</div>
           <div class="quick-card-desc">追加・編集・削除</div>
         </button>
         <button class="quick-card red-accent" data-page="menu">
-          <div class="quick-card-icon"></div>
+          <div class="quick-card-icon">🍜</div>
           <div class="quick-card-title">メニュー管理</div>
-          <div class="quick-card-desc">価格変更・商品編集</div>
+          <div class="quick-card-desc">価格変更・商品編集・写真</div>
         </button>
       </div>
       <div class="recent-header">
@@ -87,7 +103,7 @@
       </div>
     </div>
 
-    <!-- ======== お知らせ管理 ======== -->
+    <!-- お知らせ管理 -->
     <div id="page-news" style="display:none;">
       <h1 class="admin-page-title">お知らせ管理</h1>
       <button class="admin-add" id="news-add-btn">＋ 新規お知らせ</button>
@@ -96,23 +112,17 @@
       </div>
     </div>
 
-    <!-- ======== メニュー管理 ======== -->
+    <!-- メニュー管理 -->
     <div id="page-menu" style="display:none;">
       <h1 class="admin-page-title">メニュー管理</h1>
       <div class="admin-tabs">
         <button class="tab-btn active" data-tab="list">商品一覧</button>
         <button class="tab-btn" data-tab="price">価格一括変更</button>
       </div>
-
-      <!-- 商品一覧 -->
       <div id="tab-list" class="tab-content active">
         <button class="admin-add" id="menu-add-btn">＋ 商品を追加</button>
         <table class="menu-table">
-          <thead>
-            <tr>
-              <th>商品名</th><th>カテゴリ</th><th>価格</th><th>タグ</th><th>操作</th>
-            </tr>
-          </thead>
+          <thead><tr><th>商品名</th><th>カテゴリ</th><th>価格</th><th>タグ</th><th>操作</th></tr></thead>
           <tbody id="menu-table-body">
             <tr><td colspan="5" style="text-align:center;padding:2rem;">
               <div class="loading"><div class="spinner"></div>読み込み中…</div>
@@ -120,12 +130,8 @@
           </tbody>
         </table>
       </div>
-
-      <!-- 価格一括変更 -->
       <div id="tab-price" class="tab-content">
-        <div id="price-list">
-          <div class="loading"><div class="spinner"></div>読み込み中…</div>
-        </div>
+        <div id="price-list"><div class="loading"><div class="spinner"></div>読み込み中…</div></div>
         <div class="save-bar">
           <span class="save-hint">変更した価格はすぐに公開サイトへ反映されます</span>
           <button class="btn-primary" id="save-prices-btn">価格を保存する</button>
@@ -136,7 +142,7 @@
   </main>
 </div>
 
-<!-- ========== お知らせ モーダル ========== -->
+<!-- お知らせモーダル -->
 <div class="modal-overlay" id="news-modal">
   <div class="modal">
     <button class="modal-close" data-close="news-modal">✕</button>
@@ -169,12 +175,34 @@
   </div>
 </div>
 
-<!-- ========== メニュー モーダル ========== -->
+<!-- メニューモーダル（Cloudinary画像アップロード付き） -->
 <div class="modal-overlay" id="menu-modal">
   <div class="modal">
     <button class="modal-close" data-close="menu-modal">✕</button>
     <h2 class="modal-title" id="menu-modal-label">商品を追加</h2>
     <input type="hidden" id="m-id">
+
+    <!-- 画像エリア -->
+    <div class="form-group">
+      <label class="form-label">商品写真</label>
+      <img id="m-image-preview" src="" alt="プレビュー">
+      <div id="m-image-placeholder">🍜</div>
+      <div class="upload-area" id="upload-area">
+        <input type="file" id="m-image-file" accept="image/*">
+        <div class="upload-icon">📷</div>
+        <div class="upload-label">
+          <strong>タップして写真を選択</strong><br>
+          JPG・PNG・WEBP（最大10MB）
+        </div>
+      </div>
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+        <div class="progress-label" id="progress-label">アップロード中… 0%</div>
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="form-label">商品名 <span style="color:var(--red);">*</span></label>
       <input type="text" class="form-input" id="m-name" placeholder="とんこつらーめん">
@@ -211,7 +239,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">絵文字</label>
+        <label class="form-label">絵文字（写真なし時）</label>
         <input type="text" class="form-input" id="m-emoji" placeholder="🍜" maxlength="2">
       </div>
     </div>
@@ -221,28 +249,25 @@
 
 <script type="module">
   import { requireAuth, logout, openModal, closeModal, validateRequired, showToast } from "./js/auth.js";
-  import { fetchMenu }   from "./js/menu.js";
   import { renderNewsList } from "./js/news.js";
   import {
     loadMenuItems, renderMenuTable, renderPriceList,
-    savePrices, addMenuItem, updateMenuItem, deleteMenuItem, populateMenuModal,
+    savePrices, addMenuItem, updateMenuItem, deleteMenuItem,
+    populateMenuModal, uploadMenuImage, menuItems,
   } from "./js/menu-admin.js";
   import {
     loadNewsItems, renderAdminNewsList,
     addNewsItem, updateNewsItem, deleteNewsItem, populateNewsModal,
   } from "./js/news-admin.js";
 
-  /* ---- 認証ガード ---- */
+  /* ---- 認証 ---- */
   requireAuth((user) => {
     document.getElementById("user-email").textContent = user.email;
   });
   document.getElementById("logout-btn").addEventListener("click", logout);
 
-  /* ============================================================
-     ページ切り替え
-     ============================================================ */
+  /* ---- ページ切り替え ---- */
   const PAGES = ["dashboard", "news", "menu"];
-
   function showPage(name) {
     PAGES.forEach((p) => {
       document.getElementById(`page-${p}`).style.display = p === name ? "" : "none";
@@ -250,55 +275,42 @@
     document.querySelectorAll(".sidebar-link[data-page]").forEach((el) => {
       el.classList.toggle("active", el.dataset.page === name);
     });
-    if (name === "news")  initNewsPage();
-    if (name === "menu")  initMenuPage();
+    if (name === "news")      initNewsPage();
+    if (name === "menu")      initMenuPage();
     if (name === "dashboard") initDashboard();
   }
-
-  // サイドバー
   document.querySelectorAll("[data-page]").forEach((el) => {
     el.addEventListener("click", () => showPage(el.dataset.page));
   });
 
-  /* ============================================================
-     ダッシュボード
-     ============================================================ */
+  /* ---- ダッシュボード ---- */
   async function initDashboard() {
     const [menu, news] = await Promise.all([loadMenuItems(), loadNewsItems()]);
     document.getElementById("stat-menu").textContent = menu.length;
     document.getElementById("stat-news").textContent = news.length;
     if (news.length) {
-      const d = news[0].date;
+      const d = news[0].createdAt;
       document.getElementById("stat-updated").textContent =
-        d?.toDate ? d.toDate().toLocaleDateString("ja-JP") : new Date(d).toLocaleDateString("ja-JP");
+        d?.toDate ? d.toDate().toLocaleDateString("ja-JP") : "—";
     }
     renderNewsList(news.slice(0, 3), "recent-news-list");
   }
   initDashboard();
 
-  /* ============================================================
-     お知らせ管理
-     ============================================================ */
+  /* ---- お知らせ管理 ---- */
   let newsEditMode = false;
-
   async function initNewsPage() {
     await loadNewsItems();
     renderAdminNewsList();
   }
-
-  // 追加ボタン
   document.getElementById("news-add-btn").addEventListener("click", () => {
     newsEditMode = false;
     document.getElementById("news-modal-label").textContent = "お知らせを追加";
-    document.getElementById("n-id").value       = "";
-    document.getElementById("n-title").value    = "";
+    ["n-id","n-title","n-body"].forEach((id) => document.getElementById(id).value = "");
     document.getElementById("n-category").value = "お知らせ";
     document.getElementById("n-date").value     = new Date().toISOString().slice(0, 10);
-    document.getElementById("n-body").value     = "";
     openModal("news-modal");
   });
-
-  // リストのボタン委譲
   document.getElementById("admin-news-list").addEventListener("click", async (e) => {
     const btn = e.target.closest("[data-action]");
     if (!btn) return;
@@ -314,8 +326,6 @@
       if (ok) { await loadNewsItems(); renderAdminNewsList(); }
     }
   });
-
-  // 保存
   document.getElementById("news-save-btn").addEventListener("click", async () => {
     const ok = validateRequired([{ id: "n-title", errorId: "n-title-err" }]);
     if (!ok) return;
@@ -332,10 +342,9 @@
     renderAdminNewsList();
   });
 
-  /* ============================================================
-     メニュー管理
-     ============================================================ */
+  /* ---- メニュー管理 ---- */
   let menuEditMode = false;
+  let pendingFile  = null;
 
   async function initMenuPage() {
     await loadMenuItems();
@@ -343,7 +352,7 @@
     renderPriceList();
   }
 
-  // タブ切り替え
+  /* タブ切り替え */
   document.querySelectorAll(".tab-btn[data-tab]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
@@ -353,25 +362,70 @@
     });
   });
 
-  // 追加ボタン
+  /* 画像選択 → プレビュー */
+  document.getElementById("m-image-file").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    pendingFile = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const preview = document.getElementById("m-image-preview");
+      preview.src           = ev.target.result;
+      preview.style.display = "block";
+      document.getElementById("m-image-placeholder").style.display = "none";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ドラッグ＆ドロップ */
+  const uploadArea = document.getElementById("upload-area");
+  uploadArea.addEventListener("dragover",  (e) => { e.preventDefault(); uploadArea.classList.add("dragover"); });
+  uploadArea.addEventListener("dragleave", ()  => uploadArea.classList.remove("dragover"));
+  uploadArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    pendingFile = file;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const preview = document.getElementById("m-image-preview");
+      preview.src           = ev.target.result;
+      preview.style.display = "block";
+      document.getElementById("m-image-placeholder").style.display = "none";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* モーダルをリセットして開く共通処理 */
+  function resetMenuModal() {
+    pendingFile = null;
+    document.getElementById("m-image-file").value    = "";
+    document.getElementById("m-image-preview").style.display     = "none";
+    document.getElementById("m-image-placeholder").style.display = "flex";
+    hideProgress();
+  }
+
+  /* 追加ボタン */
   document.getElementById("menu-add-btn").addEventListener("click", () => {
     menuEditMode = false;
+    resetMenuModal();
     document.getElementById("menu-modal-label").textContent = "商品を追加";
-    ["m-id","m-name","m-price","m-desc","m-emoji"].forEach((id) => {
-      document.getElementById(id).value = "";
-    });
+    ["m-id","m-name","m-price","m-desc","m-emoji"].forEach((id) =>
+      document.getElementById(id).value = "");
     document.getElementById("m-category").value = "ramen";
-    document.getElementById("m-tag").value = "";
+    document.getElementById("m-tag").value      = "";
     openModal("menu-modal");
   });
 
-  // テーブルのボタン委譲
+  /* テーブルのボタン委譲 */
   document.getElementById("menu-table-body").addEventListener("click", async (e) => {
     const btn = e.target.closest("[data-action]");
     if (!btn) return;
     const { action, id, name } = btn.dataset;
     if (action === "edit") {
       menuEditMode = true;
+      resetMenuModal();
       document.getElementById("menu-modal-label").textContent = "商品を編集";
       populateMenuModal(id);
       openModal("menu-modal");
@@ -382,38 +436,80 @@
     }
   });
 
-  // 保存
+  /* 保存ボタン */
   document.getElementById("menu-save-btn").addEventListener("click", async () => {
     const ok = validateRequired([
       { id: "m-name",  errorId: "m-name-err"  },
       { id: "m-price", errorId: "m-price-err" },
     ]);
     if (!ok) return;
-    const data = {
-      name:        document.getElementById("m-name").value.trim(),
-      price:       parseInt(document.getElementById("m-price").value, 10),
-      category:    document.getElementById("m-category").value,
-      description: document.getElementById("m-desc").value.trim(),
-      tag:         document.getElementById("m-tag").value,
-      emoji:       document.getElementById("m-emoji").value.trim() || "🍜",
-    };
-    if (menuEditMode) await updateMenuItem(document.getElementById("m-id").value, data);
-    else              await addMenuItem(data);
-    closeModal("menu-modal");
-    await loadMenuItems();
-    renderMenuTable();
-    renderPriceList();
+
+    const saveBtn = document.getElementById("menu-save-btn");
+    saveBtn.disabled    = true;
+    saveBtn.textContent = "保存中…";
+
+    try {
+      // 既存の画像URLを引き継ぐ
+      let imageUrl = "";
+      if (menuEditMode) {
+        const existing = menuItems.find(
+          (m) => m.id === document.getElementById("m-id").value
+        );
+        imageUrl = existing?.imageUrl || "";
+      }
+
+      // 新しい画像があれば Cloudinary へアップロード
+      if (pendingFile) {
+        showProgress(0);
+        const result = await uploadMenuImage(pendingFile, (pct) => showProgress(pct));
+        imageUrl = result.url;
+        hideProgress();
+      }
+
+      const data = {
+        name:        document.getElementById("m-name").value.trim(),
+        price:       parseInt(document.getElementById("m-price").value, 10),
+        category:    document.getElementById("m-category").value,
+        description: document.getElementById("m-desc").value.trim(),
+        tag:         document.getElementById("m-tag").value,
+        emoji:       document.getElementById("m-emoji").value.trim() || "🍜",
+        imageUrl,
+      };
+
+      if (menuEditMode) await updateMenuItem(document.getElementById("m-id").value, data);
+      else              await addMenuItem(data);
+
+      closeModal("menu-modal");
+      await loadMenuItems();
+      renderMenuTable();
+      renderPriceList();
+    } catch (err) {
+      showToast("保存に失敗しました。もう一度お試しください。", "error");
+      console.error(err);
+    } finally {
+      saveBtn.disabled    = false;
+      saveBtn.textContent = "保存する";
+    }
   });
 
-  // 価格一括保存
+  /* 価格一括保存 */
   document.getElementById("save-prices-btn").addEventListener("click", async () => {
     await savePrices();
     renderMenuTable();
   });
 
-  /* ============================================================
-     モーダル閉じる（共通）
-     ============================================================ */
+  /* プログレスバー */
+  function showProgress(pct) {
+    document.getElementById("upload-progress").classList.add("show");
+    document.getElementById("progress-bar-fill").style.width = `${pct}%`;
+    document.getElementById("progress-label").textContent    = `アップロード中… ${pct}%`;
+  }
+  function hideProgress() {
+    document.getElementById("upload-progress").classList.remove("show");
+    document.getElementById("progress-bar-fill").style.width = "0%";
+  }
+
+  /* モーダルを閉じる */
   document.querySelectorAll("[data-close]").forEach((btn) => {
     btn.addEventListener("click", () => closeModal(btn.dataset.close));
   });
