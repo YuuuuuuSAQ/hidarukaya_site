@@ -9,12 +9,12 @@ import { getAuth }       from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getStorage }    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
  
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId:             "YOUR_APP_ID",
+  apiKey: "AIzaSyCzhcitFLoz2JiS2UIqqqeov5KrN1OSevc",
+  authDomain: "hidaruka-site.firebaseapp.com",
+  projectId: "hidaruka-site",
+  storageBucket: "hidaruka-site.firebasestorage.app",
+  messagingSenderId: "123422545595",
+  appId: "1:123422545595:web:32132d6913661153b53b9e"
 };
  
 const app = initializeApp(firebaseConfig);
