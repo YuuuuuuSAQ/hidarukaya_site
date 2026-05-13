@@ -37,7 +37,7 @@ export function renderMenuTable() {
         <div style="display:flex;align-items:center;gap:.75rem;">
           ${item.imageUrl
             ? `<img src="${item.imageUrl}" alt="${item.name}" style="width:48px;height:48px;object-fit:cover;border-radius:4px;border:1px solid var(--border);">`
-            : `<div style="width:48px;height:48px;background:var(--gold-light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">${item.emoji || "🍜"}</div>`
+            : `<div style="width:48px;height:48px;background:var(--gold-light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">${item.emoji}</div>`
           }
           <span style="font-size:.9rem;font-weight:600;">${item.name}</span>
         </div>
@@ -65,7 +65,7 @@ export function renderPriceList() {
       <div style="width:40px;height:40px;flex-shrink:0;">
         ${item.imageUrl
           ? `<img src="${item.imageUrl}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;">`
-          : `<div style="width:40px;height:40px;background:var(--gold-light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">${item.emoji || "🍜"}</div>`
+          : `<div style="width:40px;height:40px;background:var(--gold-light);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">${item.emoji}</div>`
         }
       </div>
       <div style="flex:1;">
@@ -155,8 +155,6 @@ export function populateMenuModal(id) {
   document.getElementById("m-category").value = item.category;
   document.getElementById("m-desc").value     = item.description || "";
   document.getElementById("m-tag").value      = item.tag || "";
-  document.getElementById("m-emoji").value    = item.emoji || "";
-
   const preview     = document.getElementById("m-image-preview");
   const placeholder = document.getElementById("m-image-placeholder");
   if (item.imageUrl) {
