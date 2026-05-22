@@ -461,3 +461,65 @@ body.admin-page { background: #FFF8D0; }
   background: var(--red); border-color: var(--red);
   color: white; box-shadow: 0 2px 8px rgba(212,43,26,0.3);
 }
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("../img/ramen.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* 写真を暗くして文字を読みやすくする */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  text-align: center;
+}
+
+/* トップ背景のしましま・装飾線を非表示 戻したいときはこれを削除します*/
+.hero-pattern,
+.hero::before,
+.hero::after {
+  display: none;
+}
+
+/* トップの文字を見やすくする */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem 3rem;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+}
+
+.hero-title {
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.hero-tagline {
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8);
+}
