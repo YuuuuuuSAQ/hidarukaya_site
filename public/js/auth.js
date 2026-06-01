@@ -23,7 +23,7 @@ export async function login(email, password) {
 /** ログアウトしてログインページへ */
 export async function logout() {
   await signOut(auth);
-  window.location.href = "login.html";
+  window.location.href = "_control-panel.html";
 }
 
 /**
