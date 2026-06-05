@@ -523,3 +523,9 @@ body.admin-page { background: #FFF8D0; }
   color: #fff;
   text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8);
 }
+
+.map-placeholder iframe {
+  width: 600px;
+  height: 450px;
+  max-width: 100%;
+}
