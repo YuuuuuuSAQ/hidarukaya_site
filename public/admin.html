@@ -247,16 +247,9 @@
   } from "./js/news-admin.js";
 
   /* ---- 認証 ---- */
-  const authEnabled = false; // 一時的にログインを無効にする場合は false にします
-
-  if (authEnabled) {
-    requireAuth((user) => {
-      document.getElementById("user-email").textContent = user.email;
-    });
-  } else {
-    document.getElementById("user-email").textContent = "ゲスト";
-  }
-
+  requireAuth((user) => {
+    document.getElementById("user-email").textContent = user.email;
+  });
   document.getElementById("logout-btn").addEventListener("click", logout);
 
   /* ---- ページ切り替え ---- */
